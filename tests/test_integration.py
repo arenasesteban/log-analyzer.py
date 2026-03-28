@@ -1,5 +1,3 @@
-import os
-
 from src.parser import read_logs
 from src.analyzer import compute_logs_statistics
 from src.utils import export_logs_summary
@@ -14,15 +12,13 @@ def test_integration(log_file_path, tmp_path):
     # Step 3: Export the summary to a file
     output_dir = tmp_path
     export_logs_summary(summary, output_dir, log_file_path)
-
-    print(f"Integration test completed for {output_dir}. Check the output files for results.")
     
     # Verify results
     txt_file_path = f"{output_dir}/sample_logs_output.txt"
     csv_file_path = f"{output_dir}/sample_logs_output.csv"
 
-    assert os.path.exists(txt_file_path)
-    assert os.path.exists(csv_file_path)
+    assert txt_file_path.exists()
+    assert csv_file_path.exists()
 
     with open(txt_file_path, "r") as file:
         content = file.read()
