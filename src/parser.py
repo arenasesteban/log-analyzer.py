@@ -3,7 +3,7 @@ import logging
 from typing import Optional
 from datetime import datetime
 
-from log_entry import LogEntry
+from .log_entry import LogEntry
 
 logger = logging.getLogger(__name__)
 

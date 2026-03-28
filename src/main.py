@@ -1,9 +1,9 @@
 import argparse
 import logging
 
-from parser import read_logs
-from analyzer import compute_logs_statistics
-from utils import export_logs_summary
+from .parser import read_logs
+from .analyzer import compute_logs_statistics
+from .utils import export_logs_summary
 
 logger = logging.getLogger(__name__)
 

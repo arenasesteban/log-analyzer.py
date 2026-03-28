@@ -1,7 +1,7 @@
 import logging
 from collections import Counter
 
-from log_entry import LogEntry
+from .log_entry import LogEntry
 
 logger = logging.getLogger(__name__)
 
