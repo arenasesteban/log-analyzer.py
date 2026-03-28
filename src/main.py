@@ -14,7 +14,7 @@ def main() -> None:
 
     parser.add_argument("--file", type=str, required=True, help="Path to the log file")
     parser.add_argument("--level", type=str, required=False, default="ALL", choices=["INFO", "WARNING", "ERROR", "DEBUG", "ALL"], help="Filter logs by level")
-    parser.add_argument("--output", type=str, required=False, default="../data/", help="Directory to save the output files")
+    parser.add_argument("--output", type=str, required=False, default="data", help="Directory to save the output files")
 
     args = parser.parse_args()
     
