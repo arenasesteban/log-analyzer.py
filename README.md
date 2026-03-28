@@ -1,14 +1,77 @@
 # Log Processing Pipeline | CLI
 
-Python project focused on processing plain text logs through a command-line interface. 
+This project implements a log processing pipeline that can be executed from the command line. The pipeline reads log files, processes them to extract useful information, and generates output in both text and CSV formats. The implementation includes error handling and unit tests to ensure robustness and reliability.
 
-## Features
+## Problem Statement
 
-- **Log Ingestion**: Read logs files from a specified source.
-- **Log Parsing**: Extract structured data from unstructured log entries.
-- **Validation**: Ensure log entries meet specified criteria.
-- **Filtering**: Filter logs based on specified conditions.
-- **Calculate Metrics**: Compute basic metrics from the processed log data.
-- **Output Generation**: Generate console output or export results to CSV.
-- **Error Handling**: Implement error handling to manage exceptions and invalid input.
-- **Testing**: Include unit tests to validate the functionality of each component.
+In many applications, log files are generated to record events, errors, and other important information. However, these log files can be large and difficult to analyze manually. The goal of this project is to create a command-line tool that can efficiently process log files, extract relevant information, and provide insights in a structured format.
+
+The system process log file through the following steps:
+
+```
+Input Log File -> Log Parser -> Data Analyzer -> Output Generator
+```
+
+## Project Structure
+
+```
+log-processing-pipeline/
+├── data/
+├── src/
+│   ├── main.py
+│   ├── parser.py
+│   ├── analyzer.py
+|   ├── log_entry.py
+│   ├── utils.py
+├── tests/
+│   ├── test_parser.py
+│   ├── test_analyzer.py
+│   ├── test_integration.py
+├── .gitignore
+├── environment.yml
+├── README.md
+```
+
+## Installation
+
+To set up the environment for this project, follow these steps:
+
+1. Clone the repository:
+   ```bash
+   git clone <repository_url>
+   cd log-processing-pipeline
+   ```
+
+2. Create a virtual environment and install dependencies:
+   ```bash
+   micromamba env create -f environment.yml
+   micromamba activate log-processing-pipeline
+   ```
+
+## Usage
+
+To run the log processing pipeline, use the following command:
+
+```bash
+python -m src.main --file <path_to_log_file> --level <log_level> --output <path_to_output_directory>
+```
+
+### Command-Line Arguments
+
+- `--file`: Path to the input log file (required).
+- `--level`: Log level to filter (optional, default is "ALL").
+- `--output`: Path to the output directory where results will be saved (optional, default is "output/").
+
+## Testing
+
+The project includes unit tests for the log parser and data analyzer, as well as integration tests for the entire pipeline.
+
+To run the unit and integration tests, use the following command:
+
+```bash
+pytest tests/
+```
+
+## Credits
+
+Esteban Arenas - Computer Science Student at the Universidad de Santiago de Chile (USACH) - [GitHub](https://github.com/arenasesteban)
