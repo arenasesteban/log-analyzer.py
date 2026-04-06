@@ -1,6 +1,6 @@
 import pytest
 
-from src.log_entry import LogEntry
+from app.log_entry import LogEntry
 
 """Fixtures for testing the log analyzer functions."""
 

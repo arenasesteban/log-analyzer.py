@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-from .models.summary import Summary
+from ..models.summary import Summary
 
 logger = logging.getLogger(__name__)
 

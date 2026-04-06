@@ -1,6 +1,6 @@
-from src.parser import read_logs
-from src.analyzer import compute_logs_statistics
-from src.utils import export_logs_summary
+from app.core.parser import read_logs
+from app.core.analyzer import compute_logs_statistics
+from app.core.exporter import export_logs_summary
 
 def test_integration(log_file_path, tmp_path):
     # Step 1: Read logs from the file

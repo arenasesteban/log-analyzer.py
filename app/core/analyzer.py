@@ -2,8 +2,8 @@ import logging
 from datetime import datetime
 from collections import Counter
 
-from .models.log import Log
-from .models.summary import Summary
+from ..models.log import Log
+from ..models.summary import Summary
 
 logger = logging.getLogger(__name__)
 

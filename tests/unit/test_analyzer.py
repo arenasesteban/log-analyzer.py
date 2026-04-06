@@ -1,4 +1,4 @@
-from src.analyzer import (
+from app.core.analyzer import (
     compute_logs_statistics,
     filter_logs_by_level,
     count_logs_by_level

@@ -1,10 +1,10 @@
 import argparse
 import logging
 
-from src.parser import load_logs
-from src.validator import validate_logs
-from src.analyzer import compute_logs_statistics
-from src.exporter import export_logs_summary
+from app.core.parser import load_logs
+from app.core.validator import validate_logs
+from app.core.analyzer import compute_logs_statistics
+from app.core.exporter import export_logs_summary
 
 logger = logging.getLogger(__name__)
 

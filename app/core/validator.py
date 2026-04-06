@@ -1,8 +1,8 @@
 import logging
 from datetime import datetime
 
-from .models.log import Log
-from .models.validation_result import ValidationResult
+from ..models.log import Log
+from ..models.validation_result import ValidationResult
 
 logger = logging.getLogger(__name__)
 

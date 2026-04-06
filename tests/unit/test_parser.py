@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime
 
-from src.parser import (
+from app.core.parser import (
     read_logs, 
     parse_log_line, 
     is_valid_format, 

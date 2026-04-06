@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-from .models.log import Log
+from ..models.log import Log
 
 logger = logging.getLogger(__name__)
 
