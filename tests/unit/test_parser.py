@@ -1,108 +1,91 @@
 import pytest
-from datetime import datetime
 
 from app.core.parser import (
-    read_logs, 
-    parse_log_line, 
-    is_valid_format, 
-    is_valid_timestamp, 
-    is_valid_level, 
-    is_valid_message
+    load_logs, 
+    parse_log_line
 )
 
-"""Tests for the log parser functions."""
 
-# Test cases for read_logs function
+""" Tests for the log parser functions. """
+
+# Test cases for load_logs function
 
 def test_file_not_found():
-    non_existent_file = "non_existent_file.txt"
-
     with pytest.raises(FileNotFoundError):
-        read_logs(non_existent_file)
+        load_logs("non_existent_file.txt")
 
-def test_file_with_valid_and_invalid_lines(log_file_path):
-    logs, invalid_lines = read_logs(log_file_path)
 
-    assert len(logs) == 2
-    assert invalid_lines == 2
+def test_file_with_mixed_lines(log_file_path):
+    logs = load_logs(log_file_path)
 
-def test_file_with_only_valid_lines(log_file_path_only_valid):
-    logs, invalid_lines = read_logs(log_file_path_only_valid)
+    assert len(logs) == 4
 
-    assert len(logs) == 2
-    assert invalid_lines == 0
+
+def test_file_with_valid_lines(log_file_path_with_valid_lines):
+    logs = load_logs(log_file_path_with_valid_lines)
+
+    assert len(logs) == 1
+    assert logs[0].timestamp == "2024-06-01 12:00:00"
+    assert logs[0].level == "INFO"
+    assert logs[0].component == "auth-service"
+    assert logs[0].message == "User login successful"
+    assert logs[0].context == "user_id=1234"
+    assert logs[0].raw_line == "2024-06-01 12:00:00 - INFO - auth-service - User login successful - user_id=1234\n"
+
+
+def test_file_with_empty_line(log_file_path_with_empty_line):
+    logs = load_logs(log_file_path_with_empty_line)
+
+    assert len(logs) == 1
+    assert logs[0].timestamp is None
+    assert logs[0].level is None
+    assert logs[0].component is None
+    assert logs[0].message is None
+    assert logs[0].context is None
+    assert logs[0].raw_line == "   \n"
+
+
+def test_file_with_invalid_line(log_file_path_with_invalid_line):
+    logs = load_logs(log_file_path_with_invalid_line)
+
+    assert len(logs) == 1
+    assert logs[0].timestamp is None
+    assert logs[0].level is None
+    assert logs[0].component is None
+    assert logs[0].message is None
+    assert logs[0].context is None
+    assert logs[0].raw_line == "Invalid log line without proper format\n"
 
 # Test cases for parse_log_line function
 
-def test_parse_valid_log_line(sample_log_line):
-    log_entry = parse_log_line(sample_log_line)
+def test_parse_empty_line(empty_log_line):
+    log = parse_log_line(empty_log_line)
 
-    assert log_entry is not None
-    assert log_entry.timestamp == datetime.strptime("2024-06-01 12:00:00", "%Y-%m-%d %H:%M:%S")
-    assert log_entry.log_level == "INFO"
-    assert log_entry.message == "Sample log message"
+    assert log.timestamp is None
+    assert log.level is None
+    assert log.component is None
+    assert log.message is None
+    assert log.context is None
+    assert log.raw_line == "   "
 
-def test_parse_invalid_log_line(invalid_log_line):
-    log_entry = parse_log_line(invalid_log_line)
 
-    assert log_entry is None
+def test_parse_invalid_line(invalid_log_line):
+    log = parse_log_line(invalid_log_line)
 
-def test_parse_empty_log_line(empty_log_line):
-    log_entry = parse_log_line(empty_log_line)
+    assert log.timestamp is None
+    assert log.level is None
+    assert log.component is None
+    assert log.message is None
+    assert log.context is None
+    assert log.raw_line == "Invalid log line without proper format"
 
-    assert log_entry is None
 
-def test_parse_log_line_with_invalid_level(invalid_log_level_log_line):
-    log_entry = parse_log_line(invalid_log_level_log_line)
+def test_parse_valid_line(sample_log_line):
+    log = parse_log_line(sample_log_line)
 
-    assert log_entry is None
-
-# Test cases for is_valid_format function
-
-def test_valid_format():
-    timestamp = "2024-06-01 12:00:00"
-    level = "INFO"
-    message = "Sample log message"
-    assert is_valid_format(timestamp, level, message) == True
-
-def test_invalid_format():
-    timestamp = "2024-06-01 12:00:00"
-    level = "CRITICAL"
-    message = "Sample log message"
-    assert is_valid_format(timestamp, level, message) == False
-
-def test_invalid_timestamp_format():
-    invalid_timestamp = "2024/06/01 12:00:00"
-    level = "INFO"
-    message = "Sample log message"
-    assert is_valid_format(invalid_timestamp, level, message) == False
-
-# Test cases for is_valid_timestamp function
-
-def test_valid_timestamp():
-    valid_timestamp = "2024-06-01 12:00:00"
-    assert is_valid_timestamp(valid_timestamp) == True
-
-def test_invalid_timestamp():
-    invalid_timestamp = "2024/06/01 12:00:00"
-    assert is_valid_timestamp(invalid_timestamp) == False
-
-# Test cases for is_valid_level function
-
-def test_valid_level():
-    valid_level = "INFO"
-    assert is_valid_level(valid_level) == True
-
-def test_invalid_level():   
-    invalid_level = "CRITICAL"
-    assert is_valid_level(invalid_level) == False
-
-# Test cases for is_valid_message function
-
-def test_valid_message():
-    valid_message = "Sample log message"
-    assert is_valid_message(valid_message) == True
-
-def test_invalid_message():
-    invalid_message = "   "
-    assert is_valid_message(invalid_message) == False
+    assert log.timestamp == "2024-06-01 12:00:00"
+    assert log.level == "INFO"
+    assert log.component == "auth-service"
+    assert log.message == "User login successful"
+    assert log.context == "user_id=1234"
+    assert log.raw_line == "2024-06-01 12:00:00 - INFO - auth-service - User login successful - user_id=1234"
