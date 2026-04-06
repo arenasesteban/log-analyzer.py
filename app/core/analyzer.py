@@ -11,8 +11,8 @@ logger = logging.getLogger(__name__)
 def compute_logs_statistics(valid_logs: list[Log], invalid_logs: list[tuple[Log, list[str]]], filter_level: str | None) -> Summary:
     logger.info("Starting to compute log statistics.")
 
-    if not valid_logs:
-        logger.warning("No valid log entries found for analysis.")
+    if not valid_logs and not invalid_logs:
+        logger.warning("No logs entries found for analysis.")
         return Summary()
     
     if filter_level is not None:
@@ -47,10 +47,10 @@ def analyze_logs(valid_logs: list[Log], invalid_logs: list[tuple[Log, list[str]]
     )
 
 
-def compute_time_range(valid_logs: list[Log]) -> tuple[datetime | None, datetime | None]:
+def compute_time_range(logs: list[Log]) -> tuple[datetime | None, datetime | None]:
     timestamps = []
 
-    for log in valid_logs:
+    for log in logs:
         if log.timestamp is not None:
             parsed_timestamp = datetime.strptime(log.timestamp, "%Y-%m-%d %H:%M:%S")
             timestamps.append(parsed_timestamp)
@@ -61,11 +61,11 @@ def compute_time_range(valid_logs: list[Log]) -> tuple[datetime | None, datetime
     return min(timestamps), max(timestamps)
 
 
-def compute_by_level_and_component(valid_logs: list[Log]) -> tuple[dict, dict]:
+def compute_by_level_and_component(logs: list[Log]) -> tuple[dict, dict]:
     count_by_level = Counter()
     count_by_component = Counter()
 
-    for log in valid_logs:
+    for log in logs:
         count_by_level[log.level] += 1
         count_by_component[log.component] += 1
             

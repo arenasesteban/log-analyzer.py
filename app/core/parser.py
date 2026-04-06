@@ -26,18 +26,18 @@ def load_logs(file_path: str) -> list[Log]:
     return logs
 
 
-def parse_log_line(line: str) -> Log:
-    line = line.strip()
+def parse_log_line(raw_line: str) -> Log:
+    line = raw_line.strip()
 
     if not line:
         logger.warning("Empty line found.")
-        return Log(raw_line=line) # Empty line
+        return Log(raw_line=raw_line) # Empty line
 
     line_parts = line.split(" - ", maxsplit=4)
 
     if len(line_parts) != 5:
         logger.warning("Line with invalid structure found.")
-        return Log(raw_line=line) # Invalid log format
+        return Log(raw_line=raw_line) # Invalid log format
     
     timestamp, level, component, message, context = line_parts
 
@@ -47,5 +47,5 @@ def parse_log_line(line: str) -> Log:
         component=component,
         message=message,
         context=context,
-        raw_line=line
+        raw_line=raw_line
     )

@@ -11,7 +11,7 @@ def validate_logs(logs: list[Log]) -> list[ValidationResult]:
     invalid_logs = []
 
     for log in logs:
-        validation = validate_log(log)
+        validation = validate_log_entry(log)
 
         if validation.is_valid:
             valid_logs.append(log)
@@ -21,7 +21,7 @@ def validate_logs(logs: list[Log]) -> list[ValidationResult]:
     return valid_logs, invalid_logs
 
 
-def validate_log(log: Log) -> ValidationResult:
+def validate_log_entry(log: Log) -> ValidationResult:
     errors = []
 
     if not is_valid_timestamp(log.timestamp):

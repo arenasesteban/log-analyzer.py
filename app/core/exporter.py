@@ -7,21 +7,20 @@ logger = logging.getLogger(__name__)
 
 
 def export_logs_summary(summary: Summary, output_dir: str, file_path: str) -> None:
+    logger.info(f"Exporting summary to {output_dir}")
     input_name = Path(file_path).stem
     output_path = Path(output_dir)
-    output_path.mkdir(parents=True, exist_ok=True)
-
-    txt_output_path = output_path / f"{input_name}_output.txt"
-
-    logger.info(f"Exporting summary to {output_dir}")
 
     try:
+        output_path.mkdir(parents=True, exist_ok=True)
+        txt_output_path = output_path / f"{input_name}_output.txt"
+
         summary_text = format_summary(summary, input_name)
         write_summary(summary_text, txt_output_path)
         logger.info(f"Summary successfully exported")
 
     except IOError as e:
-        logger.error(f"Failed to write summary: {e}")
+        raise IOError(f"Failed to write summary: {e}")
 
 
 def format_summary(summary: Summary, input_name: str) -> str:
