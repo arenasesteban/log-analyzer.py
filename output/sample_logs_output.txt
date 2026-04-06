@@ -1,0 +1,19 @@
+Processed file: sample_logs
+Total logs: 10
+Valid lines: 10
+Invalid lines: 0
+--------------------------------------------------
+Counts by level:
+- ERROR: 3
+- INFO: 4
+- WARNING: 2
+- DEBUG: 1
+--------------------------------------------------
+Counts by component:
+- payment-service: 4
+- auth-service: 3
+- inventory-service: 3
+--------------------------------------------------
+Time range:
+- First log time: 2026-04-04 08:17:01
+- Last log time: 2026-04-04 08:50:30

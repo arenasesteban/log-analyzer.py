@@ -1,0 +1,10 @@
+2026-04-04 08:17:01 - ERROR - payment-service - Payment rejected - user_id=2041
+2026-04-04 08:18:45 - INFO - auth-service - User login successful - user_id=2041
+2026-04-04 08:20:12 - WARNING - inventory-service - Low stock for product - product_id=5678
+2026-04-04 08:22:30 - ERROR - payment-service - Payment failed - user_id=2041, error_code=502
+2026-04-04 08:25:00 - INFO - auth-service - User logout successful - user_id=2041
+2026-04-04 08:30:45 - INFO - inventory-service - Stock replenished - product_id=5678, quantity=100
+2026-04-04 08:35:20 - ERROR - payment-service - Payment processing error - user_id=2041, error_code=503
+2026-04-04 08:40:10 - WARNING - auth-service - Multiple failed login attempts - user_id=2041
+2026-04-04 08:45:00 - DEBUG - inventory-service - Inventory check completed - product_id=5678, available_stock=50
+2026-04-04 08:50:30 - INFO - payment-service - Payment processed successfully - user_id=2041, amount=150.00

@@ -1,6 +1,0 @@
-2026-03-26 10:15:00 - INFO - Application started
-2026-03-26 10:15:03 - WARNING - Slow response detected
-2026-03-26 10:15:10 - ERROR - Connection failed
-invalid line without expected format
-2026-03-26 10:16:00 - DEBUG - This level should be invalid
-2026-03-26 10:16:12 - INFO - Retry completed
