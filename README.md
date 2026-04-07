@@ -171,6 +171,6 @@ pytest tests/
 
 ## Author
 
-Esteban Arenas<br>
-Computer Science Student, Universidad de Santiago de Chile (USACH)<br>
-[![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/arenasesteban)
+## Author
+
+**Esteban Arenas** – Computer Science Student, USACH – [![Github](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/arenasesteban)
