@@ -1,77 +1,176 @@
-# Log Processing Pipeline | CLI
+# Log Processing Pipeline (CLI)
 
-This project implements a log processing pipeline that can be executed from the command line. The pipeline reads log files, processes them to extract useful information, and generates output in both text and CSV formats. The implementation includes error handling and unit tests to ensure robustness and reliability.
+A command-line pipeline that turns structured log files into a reliable operational summary by parsing, validating, and analyzing entries before reporting results.
 
-## Problem Statement
+## Why This Project Exists
 
-In many applications, log files are generated to record events, errors, and other important information. However, these log files can be large and difficult to analyze manually. The goal of this project is to create a command-line tool that can efficiently process log files, extract relevant information, and provide insights in a structured format.
+In many systems, logs are consumed for analysis without first checking data integrity.
+That creates unreliable metrics and weakens operational decisions.
 
-The system process log file through the following steps:
+This project addresses that gap with a deterministic processing flow that:
 
-```
-Input Log File -> Log Parser -> Data Analyzer -> Output Generator
-```
+- Parses each raw line into a domain object.
+- Validates structural and semantic integrity.
+- Separates valid and invalid entries.
+- Computes summary statistics from valid logs.
+- Exports a plain-text report for traceable review.
 
-## Project Structure
+## Scope
 
-```
-log-processing-pipeline/
-├── data/
-├── src/
-│   ├── main.py
-│   ├── parser.py
-│   ├── analyzer.py
-|   ├── log_entry.py
-│   ├── utils.py
-├── tests/
-│   ├── test_parser.py
-│   ├── test_analyzer.py
-│   ├── test_integration.py
-├── .gitignore
-├── environment.yml
-├── README.md
-```
+This project is intentionally focused on offline log processing via CLI.
+
+It is designed for:
+
+- Single-file batch processing.
+- Basic integrity validation.
+- Aggregated summaries for quick diagnostics.
+
+It is not designed for:
+
+- Real-time streaming ingestion.
+- Distributed processing.
+- Dashboarding or long-term storage.
+
+## Input Contract
+
+Each log line is expected to follow this format:
+
+`YYYY-MM-DD HH:MM:SS - LEVEL - COMPONENT - MESSAGE - CONTEXT`
+
+Valid levels:
+
+- `INFO`
+- `WARNING`
+- `ERROR`
+- `DEBUG`
+
+Any line that does not match the expected structure, or fails field validation, is marked as invalid.
+
+## Processing Pipeline
+
+The system is structured into four stages:
+
+1. Parser
+    Converts raw text lines into log entities.
+
+2. Validator
+    Applies explicit rules for timestamp format, level, component, and message.
+
+3. Analyzer
+    Computes totals, level/component counts, and time range.
+
+4. Exporter
+    Writes a text summary to the output directory.
+
+This separation keeps responsibilities explicit and supports focused unit testing.
 
 ## Installation
 
-To set up the environment for this project, follow these steps:
+1. Create the environment from the provided specification:
 
-1. Clone the repository:
-   ```bash
-   git clone <repository_url>
-   cd log-processing-pipeline
-   ```
-
-2. Create a virtual environment and install dependencies:
-   ```bash
-   micromamba env create -f environment.yml
-   micromamba activate log-processing-pipeline
-   ```
+```bash
+micromamba env create -f environment.yml
+micromamba activate log-analyzer
+```
 
 ## Usage
 
-To run the log processing pipeline, use the following command:
+Base command:
 
 ```bash
-python -m src.main --file <path_to_log_file> --level <log_level> --output <path_to_output_directory>
+python -m app.main --file input/sample_logs.txt
 ```
 
-### Command-Line Arguments
+Filter by level:
 
-- `--file`: Path to the input log file (required).
-- `--level`: Log level to filter (optional, default is "ALL").
-- `--output`: Path to the output directory where results will be saved (optional, default is "output/").
+```bash
+python -m app.main --file input/sample_logs.txt --level ERROR
+```
+
+Custom output directory:
+
+```bash
+python -m app.main --file input/sample_logs.txt --output output
+```
+
+### CLI Arguments
+
+- `--file`
+   Path to the input log file (required).
+
+- `--level`
+   Optional level filter. Allowed values: `INFO`, `WARNING`, `ERROR`, `DEBUG`.
+
+- `--output`
+   Output directory for generated reports (optional, default: `output`).
+
+## Output
+
+Execution generates:
+
+`<input_filename>_output.txt`
+
+The report includes:
+
+- Processed file name
+- Total log lines
+- Valid lines
+- Invalid lines
+- Counts by level
+- Counts by component
+- Time range (first and last valid timestamp)
 
 ## Testing
 
-The project includes unit tests for the log parser and data analyzer, as well as integration tests for the entire pipeline.
+Current test strategy emphasizes unit-level verification for parser, validator, analyzer, and exporter behaviors.
 
-To run the unit and integration tests, use the following command:
+Run tests with:
 
 ```bash
 pytest tests/
 ```
 
-## Credits
+## Project Structure
 
-Esteban Arenas - Computer Science Student at the Universidad de Santiago de Chile (USACH) - [GitHub](https://github.com/arenasesteban)
+```text
+.
+├── README.md                   # Project documentation
+├── environment.yml             # Environment and dependency management
+├── pytest.ini                  # Test suite configuration
+│
+├── app/                        # Source code
+│   ├── main.py                 # Application entry point
+│   ├── core/                   # Core business logic
+│   │   ├── __init__.py
+│   │   ├── analyzer.py         # Data analysis logic
+│   │   ├── exporter.py         # Data export utilities
+│   │   ├── parser.py           # Input processing
+│   │   └── validator.py        # Validation rules
+│   └── models/                 # Data structures
+│       ├── __init__.py
+│       ├── log.py
+│       ├── summary.py
+│       └── validation_result.py
+│
+├── input/                      # Input data files
+│   └── sample_logs.txt
+│
+├── output/                     # Generated output files
+│   └── sample_logs_output.txt
+│
+└── tests/                      # Testing suite
+    ├── conftest.py             # Shared test fixtures
+    ├── integration/            # Integration tests
+    │   └── test_integration.py
+    └── unit/                   # Individual component tests
+        ├── test_analyzer.py
+        ├── test_exporter.py
+        ├── test_parser.py
+        └── test_validator.py
+```
+
+## Author
+
+Esteban Arenas
+Computer Science Student, Universidad de Santiago de Chile (USACH)
+GitHub: https://github.com/arenasesteban
